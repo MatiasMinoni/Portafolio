@@ -1,37 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  AnimatePresence,
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-} from 'motion/react';
-import { ArrowUpRight, Download, Mail } from 'lucide-react';
-import { contact, hero, profile } from '../data/content';
+import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react';
+import { ArrowDown, ArrowUpRight, Download, Mail } from 'lucide-react';
+import { contact, experience, hero, profile } from '../data/content';
 import { useI18n } from '../lib/i18n';
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from '../lib/brand-icons';
 import { CodeWindow } from './CodeWindow';
 import { MagneticLink, ease } from './ui';
 
-function AnimatedWord({ word, delay, ready }: { word: string; delay: number; ready: boolean }) {
-  return (
-    <span className="inline-flex overflow-hidden pb-[0.08em]">
-      {word.split('').map((char, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          initial={{ y: '110%', rotate: 8 }}
-          animate={ready ? { y: 0, rotate: 0 } : undefined}
-          transition={{ duration: 0.9, delay: delay + i * 0.04, ease }}
-        >
-          {char}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
+const currentCompanies = experience.filter((job) => job.roles.some((r) => r.end === null)).map((job) => job.company);
 
 function RotatingWords({ words }: { words: string[] }) {
   const [index, setIndex] = useState(0);
@@ -43,15 +19,15 @@ function RotatingWords({ words }: { words: string[] }) {
 
   const word = words[index % words.length];
   return (
-    <span className="relative flex min-h-[1.3em] overflow-hidden sm:inline-flex sm:min-h-0 sm:align-bottom">
+    <span className="relative flex min-h-[1.25em] overflow-hidden sm:inline-flex sm:min-h-0 sm:align-bottom">
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={word}
-          className="text-gradient inline-block pb-1 whitespace-nowrap"
-          initial={{ y: '100%', opacity: 0, filter: 'blur(6px)' }}
-          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-          exit={{ y: '-100%', opacity: 0, filter: 'blur(6px)' }}
-          transition={{ duration: 0.55, ease }}
+          className="accent-serif inline-block pr-[0.08em] pb-1 text-[1.12em] leading-none whitespace-nowrap text-accent"
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: '-100%', opacity: 0 }}
+          transition={{ duration: 0.5, ease }}
         >
           {word}
         </motion.span>
@@ -60,111 +36,73 @@ function RotatingWords({ words }: { words: string[] }) {
   );
 }
 
-export function Hero({ ready }: { ready: boolean }) {
+export function Hero() {
   const { tr, lang } = useI18n();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 160]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const codeY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-
-  const mx = useSpring(useMotionValue(50), { stiffness: 60, damping: 20 });
-  const my = useSpring(useMotionValue(35), { stiffness: 60, damping: 20 });
-  const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mx}% ${my}%, rgb(110 242 192 / 0.09), transparent 70%)`;
+  const codeY = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
   const show = (delay: number) => ({
-    initial: { opacity: 0, y: 24 },
-    animate: ready ? { opacity: 1, y: 0 } : undefined,
-    transition: { duration: 0.8, delay, ease },
+    initial: { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.7, delay, ease },
   });
 
   const socials = [
-    { href: profile.github, label: 'GitHub', icon: <GithubIcon className="size-[18px]" /> },
-    { href: profile.linkedin, label: 'LinkedIn', icon: <LinkedinIcon className="size-[18px]" /> },
+    { href: profile.github, label: 'GitHub', icon: <GithubIcon className="size-[17px]" /> },
+    { href: profile.linkedin, label: 'LinkedIn', icon: <LinkedinIcon className="size-[17px]" /> },
     {
       href: `${profile.whatsapp}?text=${encodeURIComponent(tr(contact.whatsappText))}`,
       label: 'WhatsApp',
-      icon: <WhatsappIcon className="size-[18px]" />,
+      icon: <WhatsappIcon className="size-[17px]" />,
     },
-    { href: `mailto:${profile.email}`, label: 'Email', icon: <Mail className="size-[18px]" /> },
+    { href: `mailto:${profile.email}`, label: 'Email', icon: <Mail className="size-[17px]" /> },
   ];
 
   return (
-    <section
-      id="inicio"
-      ref={ref}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-24"
-      onPointerMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        mx.set(((e.clientX - rect.left) / rect.width) * 100);
-        my.set(((e.clientY - rect.top) / rect.height) * 100);
-      }}
-    >
-      {/* Fondo */}
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="bg-grid mask-radial absolute inset-0" />
-        <motion.div
-          className="absolute -top-40 -left-32 size-[34rem] rounded-full bg-mint/[0.13] blur-[120px]"
-          animate={{ x: [0, 80, -20, 0], y: [0, 40, 90, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute top-1/3 -right-40 size-[36rem] rounded-full bg-violet/[0.16] blur-[130px]"
-          animate={{ x: [0, -90, 30, 0], y: [0, -50, 40, 0] }}
-          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute -bottom-40 left-1/3 size-[28rem] rounded-full bg-sky/[0.10] blur-[120px]"
-          animate={{ x: [0, 60, -60, 0], y: [0, -30, 10, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div className="absolute inset-0" style={{ background: spotlight }} />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink-950" />
-      </div>
-
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <motion.div style={{ y: contentY, opacity: contentOpacity }}>
+    <section id="inicio" ref={ref} className="relative flex min-h-[100svh] items-center pt-32 pb-20">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.08fr_0.92fr]">
+        <div>
           <motion.p
-            {...show(0.1)}
-            className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-xs text-muted backdrop-blur"
+            {...show(0.05)}
+            className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 py-1.5 font-mono text-xs text-muted"
           >
             <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-mint" />
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-40" />
+              <span className="relative inline-flex size-2 rounded-full bg-success" />
             </span>
             {tr(hero.eyebrow)}
           </motion.p>
 
-          <h1 className="mt-7 font-display text-[clamp(3.4rem,10vw,7.25rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
+          <h1 className="mt-7 text-[clamp(3.25rem,9vw,6.75rem)] leading-[0.95] font-semibold tracking-[-0.055em]">
             <span className="sr-only">{profile.name}</span>
-            <span aria-hidden className="block">
-              <AnimatedWord word="Matias" delay={0.15} ready={ready} />
-            </span>
-            <span aria-hidden className="block">
-              <AnimatedWord word="Minoni" delay={0.35} ready={ready} />
-              <motion.span
-                className="inline-block text-mint"
-                initial={{ scale: 0 }}
-                animate={ready ? { scale: 1 } : undefined}
-                transition={{ delay: 0.85, type: 'spring', stiffness: 400, damping: 12 }}
-              >
-                .
-              </motion.span>
-            </span>
+            {['Matias', 'Minoni'].map((word, i) => (
+              <span key={word} aria-hidden className="block overflow-hidden pb-[0.06em]">
+                <motion.span
+                  className="block"
+                  initial={{ y: '105%' }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 0.85, delay: 0.1 + i * 0.1, ease }}
+                >
+                  {word}
+                  {i === 1 ? <span className="text-accent">.</span> : null}
+                </motion.span>
+              </span>
+            ))}
           </h1>
 
-          <motion.p {...show(0.55)} className="mt-7 font-display text-2xl font-medium tracking-tight text-fg/90 sm:text-3xl">
+          <motion.p {...show(0.35)} className="mt-7 text-2xl font-medium tracking-[-0.02em] text-ink sm:text-[1.9rem]">
             {tr(hero.lead)} <RotatingWords key={lang} words={tr(hero.rotating)} />
           </motion.p>
 
-          <motion.p {...show(0.65)} className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+          <motion.p {...show(0.45)} className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             {tr(hero.description)}
           </motion.p>
 
-          <motion.div {...show(0.75)} className="mt-9 flex flex-wrap items-center gap-3">
+          <motion.div {...show(0.55)} className="mt-9 flex flex-wrap items-center gap-3">
             <MagneticLink
               href="#contacto"
-              className="group inline-flex items-center gap-2 rounded-full bg-mint px-6 py-3.5 text-sm font-semibold text-ink-950 shadow-[0_0_40px_-8px] shadow-mint/60"
+              className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-paper transition-colors hover:bg-accent"
             >
               {tr(hero.ctaPrimary)}
               <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:rotate-45" />
@@ -172,70 +110,62 @@ export function Hero({ ready }: { ready: boolean }) {
             <MagneticLink
               href={profile.cv}
               download
-              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-medium backdrop-blur transition-colors hover:border-white/30 hover:bg-white/[0.07]"
+              className="group inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3.5 text-sm font-medium transition-colors hover:border-ink"
             >
               <Download className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" />
               {tr(hero.ctaSecondary)}
             </MagneticLink>
           </motion.div>
 
-          <motion.ul
-            className="mt-10 flex items-center gap-3"
-            initial="hidden"
-            animate={ready ? 'show' : 'hidden'}
-            variants={{ show: { transition: { staggerChildren: 0.07, delayChildren: 0.9 } } }}
-          >
-            {socials.map((s) => (
-              <motion.li
-                key={s.label}
-                variants={{ hidden: { opacity: 0, y: 12, scale: 0.8 }, show: { opacity: 1, y: 0, scale: 1 } }}
-              >
-                <motion.a
-                  href={s.href}
-                  target={s.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  className="grid size-11 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-muted transition-colors hover:border-mint/40 hover:text-mint"
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.92 }}
-                >
-                  {s.icon}
-                </motion.a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </motion.div>
+          <motion.div {...show(0.65)} className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <ul className="flex items-center gap-2">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target={s.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    aria-label={s.label}
+                    className="grid size-10 place-items-center rounded-full border border-line bg-surface text-muted transition-colors hover:border-ink hover:text-ink"
+                  >
+                    {s.icon}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="text-sm text-subtle">
+              {tr(hero.currently)}{' '}
+              {currentCompanies.map((c, i) => (
+                <span key={c}>
+                  <span className="font-medium text-ink">{c}</span>
+                  {i < currentCompanies.length - 1 ? ' · ' : ''}
+                </span>
+              ))}
+            </p>
+          </motion.div>
+        </div>
 
         <motion.div
           style={{ y: codeY }}
-          initial={{ opacity: 0, y: 40, rotateX: 12 }}
-          animate={ready ? { opacity: 1, y: 0, rotateX: 0 } : undefined}
-          transition={{ duration: 1.1, delay: 0.5, ease }}
-          className="min-w-0 [perspective:1200px]"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.35, ease }}
+          className="min-w-0"
         >
-          <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
-            <CodeWindow start={ready} />
-          </motion.div>
+          <CodeWindow start />
         </motion.div>
       </div>
 
-      <motion.a
+      <a
         href="#sobre-mi"
         aria-label={tr(hero.scroll)}
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-mono text-[0.65rem] tracking-[0.3em] text-subtle uppercase md:flex"
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : undefined}
-        transition={{ delay: 1.4 }}
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-2 font-mono text-[0.7rem] tracking-[0.2em] text-subtle uppercase transition-colors hover:text-ink md:flex"
       >
-        <span className="flex h-9 w-5 justify-center rounded-full border border-white/20 pt-1.5">
-          <motion.span
-            className="size-1 rounded-full bg-mint"
-            animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </span>
         {tr(hero.scroll)}
-      </motion.a>
+        <motion.span animate={{ y: [0, 4, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
+          <ArrowDown className="size-3.5" />
+        </motion.span>
+      </a>
     </section>
   );
 }

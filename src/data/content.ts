@@ -84,13 +84,14 @@ export const hero = {
   ctaPrimary: { es: 'Hablemos', en: "Let's talk" },
   ctaSecondary: { es: 'Descargar CV', en: 'Download CV' },
   scroll: { es: 'Scroll', en: 'Scroll' },
+  currently: { es: 'Hoy trabajo en', en: 'Currently at' },
 };
 
 export const about = {
   kicker: { es: 'Sobre mí', en: 'About me' },
   title: {
-    es: 'Versatilidad técnica, del backend al navegador automatizado.',
-    en: 'Technical versatility, from the backend to the automated browser.',
+    es: 'Versatilidad técnica, del backend al *navegador automatizado*.',
+    en: 'Technical versatility, from the backend to the *automated browser*.',
   },
   paragraphs: {
     es: [
@@ -113,7 +114,7 @@ export type ServiceIcon = 'server' | 'radar' | 'smartphone' | 'sparkles' | 'layo
 
 export const services = {
   kicker: { es: 'Qué hago', en: 'What I do' },
-  title: { es: 'Áreas en las que aporto más valor', en: 'Where I add the most value' },
+  title: { es: 'Áreas en las que aporto *más valor*', en: 'Where I add *the most value*' },
   items: [
     {
       icon: 'server' as ServiceIcon,
@@ -234,7 +235,7 @@ export const aboutStats: { value: number; suffix: string; label: L }[] = [
 
 export const stackSection = {
   kicker: { es: 'Stack', en: 'Stack' },
-  title: { es: 'Herramientas con las que construyo', en: 'Tools I build with' },
+  title: { es: 'Herramientas con las que *construyo*', en: 'Tools I *build* with' },
   subtitle: {
     es: 'De lenguajes y frameworks a bases de datos, colas, scraping e IA.',
     en: 'From languages and frameworks to databases, queues, scraping and AI.',
@@ -289,7 +290,7 @@ export const experience: Job[] = [
 
 export const experienceSection = {
   kicker: { es: 'Experiencia', en: 'Experience' },
-  title: { es: 'Dónde estuve construyendo', en: "Where I've been building" },
+  title: { es: 'Dónde estuve *construyendo*', en: "Where I've been *building*" },
   present: { es: 'Actualidad', en: 'Present' },
   current: { es: 'Actual', en: 'Current' },
 };
@@ -305,7 +306,7 @@ export type Project = {
 
 export const projectsSection = {
   kicker: { es: 'Proyectos', en: 'Projects' },
-  title: { es: 'Trabajo destacado', en: 'Selected work' },
+  title: { es: 'Trabajo *destacado*', en: '*Selected* work' },
   featured: {
     label: { es: 'Caso freelance · Workana', en: 'Freelance case · Workana' },
     title: {
@@ -370,7 +371,7 @@ export const earlyProjects: Project[] = [
 
 export const education = {
   kicker: { es: 'Formación', en: 'Education' },
-  title: { es: 'Aprendizaje continuo', en: 'Always learning' },
+  title: { es: 'Aprendizaje *continuo*', en: 'Always *learning*' },
   university: {
     institution: 'UTN · Facultad Regional Avellaneda',
     degree: { es: 'Ingeniería en Informática', en: 'Computer Engineering' },

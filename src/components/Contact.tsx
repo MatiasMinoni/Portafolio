@@ -25,7 +25,7 @@ function CopyEmail() {
           window.location.href = `mailto:${profile.email}`;
         }
       }}
-      className="relative inline-flex h-8 min-w-24 items-center justify-center gap-1.5 overflow-hidden rounded-full border border-white/10 px-3 text-xs text-muted transition-colors hover:border-mint/40 hover:text-mint"
+      className="relative inline-flex h-8 min-w-24 items-center justify-center gap-1.5 overflow-hidden rounded-full border border-line bg-surface px-3 text-xs text-muted transition-colors hover:border-ink hover:text-ink"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
@@ -36,7 +36,7 @@ function CopyEmail() {
           exit={{ y: -14, opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {copied ? <Check className="size-3.5 text-mint" /> : <Copy className="size-3.5" />}
+          {copied ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
           {copied ? tr(contact.copied) : tr(contact.copy)}
         </motion.span>
       </AnimatePresence>
@@ -60,7 +60,7 @@ function Field({
 }
 
 const inputCls =
-  'w-full rounded-2xl border border-white/10 bg-ink-950/60 px-4 py-3.5 text-fg placeholder:text-subtle outline-none transition focus:border-mint/60 focus:bg-ink-950 focus:ring-4 focus:ring-mint/10';
+  'w-full rounded-2xl border border-line bg-paper px-4 py-3.5 text-ink placeholder:text-subtle outline-none transition focus:border-accent focus:bg-surface focus:ring-4 focus:ring-accent/10';
 
 function ContactForm() {
   const { tr } = useI18n();
@@ -98,7 +98,7 @@ function ContactForm() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.08] bg-ink-900/80 p-6 backdrop-blur sm:p-9">
+    <div className="relative overflow-hidden rounded-[2rem] border border-line bg-surface p-6 sm:p-9">
       <AnimatePresence mode="wait" initial={false}>
         {status === 'sent' ? (
           <motion.div
@@ -109,8 +109,8 @@ function ContactForm() {
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.4, ease }}
           >
-            <span className="grid size-20 place-items-center rounded-full bg-mint/10 ring-1 ring-mint/40">
-              <svg viewBox="0 0 24 24" className="size-10 text-mint" fill="none" stroke="currentColor" strokeWidth={2.2}>
+            <span className="grid size-20 place-items-center rounded-full bg-success/10 ring-1 ring-success/30">
+              <svg viewBox="0 0 24 24" className="size-10 text-success" fill="none" stroke="currentColor" strokeWidth={2.2}>
                 <motion.path
                   d="M5 12.5l4.5 4.5L19 7.5"
                   strokeLinecap="round"
@@ -121,12 +121,12 @@ function ContactForm() {
                 />
               </svg>
             </span>
-            <p className="mt-6 font-display text-2xl font-semibold">{tr(f.sent)}</p>
+            <p className="mt-6 text-2xl font-semibold tracking-[-0.02em]">{tr(f.sent)}</p>
             <p className="mt-2 text-muted">{tr(f.sentDetail)}</p>
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="mt-8 rounded-full border border-white/15 px-5 py-2.5 text-sm transition-colors hover:border-white/30"
+              className="mt-8 rounded-full border border-line-strong px-5 py-2.5 text-sm transition-colors hover:border-ink"
             >
               {tr(f.again)}
             </button>
@@ -164,7 +164,7 @@ function ContactForm() {
               {status === 'error' ? (
                 <motion.p
                   role="alert"
-                  className="rounded-xl border border-rose/30 bg-rose/10 px-4 py-3 text-sm text-rose"
+                  className="rounded-xl border border-danger/25 bg-danger/5 px-4 py-3 text-sm text-danger"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -179,9 +179,8 @@ function ContactForm() {
               disabled={status === 'sending'}
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-mint px-6 py-4 font-semibold text-ink-950 disabled:cursor-wait disabled:opacity-80"
+              className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-ink px-6 py-4 font-medium text-paper transition-colors hover:bg-accent disabled:cursor-wait disabled:opacity-80"
             >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               <AnimatePresence mode="wait" initial={false}>
                 {status === 'sending' ? (
                   <motion.span
@@ -231,18 +230,17 @@ export function Contact() {
   ];
 
   return (
-    <section id="contacto" className="relative overflow-hidden py-28 md:py-36">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      <div aria-hidden className="absolute top-1/4 left-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-violet/10 blur-[140px]" />
+    <section id="contacto" className="relative overflow-hidden border-t border-line bg-surface/60 py-24 md:py-32">
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
-          <p className="flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-mint uppercase">
-            <span className="h-px w-8 bg-mint/60" />
+          <p className="flex items-center gap-3 font-mono text-xs tracking-[0.18em] text-muted uppercase">
+            <span className="text-accent">07</span>
+            <span className="h-px w-6 bg-line-strong" />
             {tr(contact.kicker)}
           </p>
         </Reveal>
-        <h2 className="mt-5 font-display text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.98] font-semibold tracking-[-0.03em]">
+        <h2 className="mt-5 text-[clamp(2.6rem,7vw,5.25rem)] leading-[1] font-semibold tracking-[-0.045em]">
           <span className="block overflow-hidden pb-2">
             <motion.span
               key={tr(contact.title)}
@@ -258,7 +256,7 @@ export function Contact() {
           <span className="block overflow-hidden pb-2">
             <motion.span
               key={tr(contact.titleAccent)}
-              className="text-gradient block"
+              className="accent-serif block pb-1 text-[1.1em] text-accent"
               initial={{ y: '100%' }}
               whileInView={{ y: 0 }}
               viewport={{ once: true }}
@@ -275,14 +273,14 @@ export function Contact() {
         <div className="mt-14 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-4">
             <Reveal y={30}>
-              <div className="rounded-[2rem] border border-white/[0.08] bg-gradient-to-br from-mint/[0.08] to-transparent p-6 sm:p-8">
+              <div className="rounded-[2rem] border border-line bg-surface p-6 sm:p-8">
                 <div className="flex items-center gap-3 text-muted">
-                  <Mail className="size-5 text-mint" strokeWidth={1.6} />
+                  <Mail className="size-5 text-accent" strokeWidth={1.7} />
                   <span className="font-mono text-xs tracking-wider uppercase">Email</span>
                 </div>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="mt-3 block font-display text-xl font-medium break-all transition-colors hover:text-mint sm:text-2xl"
+                  className="mt-3 block text-xl font-medium tracking-[-0.02em] break-all transition-colors hover:text-accent sm:text-2xl"
                 >
                   {profile.email}
                 </a>
@@ -308,16 +306,16 @@ export function Contact() {
                     href={c.href}
                     target={c.href.startsWith('http') ? '_blank' : undefined}
                     rel="noreferrer"
-                    className="group flex items-center gap-4 rounded-2xl border border-white/[0.08] bg-ink-850/80 p-4 transition-colors hover:border-mint/30"
+                    className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-line-strong"
                   >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/[0.04] text-muted transition-colors group-hover:text-mint">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-paper text-muted transition-colors group-hover:text-accent">
                       {c.icon}
                     </span>
                     <span className="min-w-0">
                       <span className="block text-sm font-medium">{c.label}</span>
                       <span className="block truncate text-xs text-muted">{c.value}</span>
                     </span>
-                    <ArrowUpRight className="ml-auto size-4 shrink-0 text-subtle transition-all duration-300 group-hover:rotate-45 group-hover:text-mint" />
+                    <ArrowUpRight className="ml-auto size-4 shrink-0 text-subtle transition-all duration-300 group-hover:rotate-45 group-hover:text-ink" />
                   </a>
                 </motion.li>
               ))}
@@ -325,7 +323,7 @@ export function Contact() {
 
             <Reveal delay={0.2}>
               <p className="flex items-center gap-2 px-2 pt-2 text-sm text-muted">
-                <MapPin className="size-4 text-mint" />
+                <MapPin className="size-4 text-accent" />
                 {profile.location}
               </p>
             </Reveal>

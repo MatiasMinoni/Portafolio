@@ -17,7 +17,7 @@ export function BackToTop() {
         <motion.a
           href="#inicio"
           aria-label={tr(footer.backToTop)}
-          className="fixed right-5 bottom-5 z-40 grid size-12 place-items-center rounded-full border border-white/10 bg-ink-900/80 text-fg backdrop-blur-xl transition-colors hover:border-mint/50 hover:text-mint"
+          className="fixed right-5 bottom-5 z-40 grid size-11 place-items-center rounded-full border border-line bg-surface/90 text-ink shadow-[0_10px_30px_-18px_rgb(20_20_23/0.5)] backdrop-blur transition-colors hover:border-ink"
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
@@ -34,10 +34,10 @@ export function BackToTop() {
 export function Footer() {
   const { tr } = useI18n();
   return (
-    <footer className="relative border-t border-white/[0.06]">
+    <footer className="relative border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-5 py-10 text-sm text-muted sm:flex-row sm:px-8">
         <div className="flex items-center gap-3">
-          <span className="grid size-8 place-items-center rounded-full bg-gradient-to-br from-mint to-violet font-display text-xs font-bold text-ink-950">
+          <span className="grid size-8 place-items-center rounded-full bg-ink text-[0.7rem] font-semibold text-paper">
             {profile.initials}
           </span>
           <span>
@@ -46,10 +46,10 @@ export function Footer() {
         </div>
         <p className="text-subtle">{tr(footer.madeWith)}</p>
         <div className="flex items-center gap-4">
-          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="transition-colors hover:text-mint">
+          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="transition-colors hover:text-ink">
             <GithubIcon className="size-5" />
           </a>
-          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-mint">
+          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-ink">
             <LinkedinIcon className="size-5" />
           </a>
         </div>
