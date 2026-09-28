@@ -15,7 +15,7 @@ export function LangToggle({ layoutId = 'lang-pill' }: { layoutId?: string }) {
     <div
       role="group"
       aria-label="Idioma / Language"
-      className="relative flex rounded-full border border-white/10 bg-white/[0.03] p-1 font-mono text-xs"
+      className="relative flex rounded-full border border-line bg-surface p-1 font-mono text-xs"
     >
       {options.map((opt) => (
         <button
@@ -23,12 +23,12 @@ export function LangToggle({ layoutId = 'lang-pill' }: { layoutId?: string }) {
           type="button"
           onClick={() => setLang(opt)}
           aria-pressed={lang === opt}
-          className={`relative rounded-full px-3 py-1.5 uppercase transition-colors ${lang === opt ? 'text-ink-950' : 'text-muted hover:text-fg'}`}
+          className={`relative rounded-full px-3 py-1.5 uppercase transition-colors ${lang === opt ? 'text-paper' : 'text-muted hover:text-ink'}`}
         >
           {lang === opt ? (
             <motion.span
               layoutId={layoutId}
-              className="absolute inset-0 rounded-full bg-mint"
+              className="absolute inset-0 rounded-full bg-ink"
               transition={{ type: 'spring', stiffness: 420, damping: 32 }}
             />
           ) : null}
@@ -39,7 +39,7 @@ export function LangToggle({ layoutId = 'lang-pill' }: { layoutId?: string }) {
   );
 }
 
-export function Navbar({ ready }: { ready: boolean }) {
+export function Navbar() {
   const { tr } = useI18n();
   const active = useActiveSection(sectionIds);
   const { scrollY } = useScroll();
@@ -68,20 +68,20 @@ export function Navbar({ ready }: { ready: boolean }) {
     <>
       <motion.header
         className="fixed inset-x-0 top-0 z-50 px-4 pt-4"
-        initial={{ y: -90, opacity: 0 }}
-        animate={ready ? { y: hidden && !open ? -110 : 0, opacity: 1 } : { y: -90, opacity: 0 }}
-        transition={{ duration: 0.55, ease }}
+        initial={false}
+        animate={{ y: hidden && !open ? -110 : 0 }}
+        transition={{ duration: 0.45, ease }}
       >
         <nav
           className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border px-3 py-2 backdrop-blur-xl transition-colors duration-500 ${
-            scrolled || open ? 'border-white/10 bg-ink-900/75' : 'border-transparent bg-transparent'
+            scrolled || open ? 'border-line bg-surface/80 shadow-[0_8px_30px_-20px_rgb(20_20_23/0.35)]' : 'border-transparent bg-transparent'
           }`}
         >
           <a href="#inicio" className="group flex items-center gap-3 rounded-full pr-3 pl-1" onClick={() => setOpen(false)}>
-            <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-mint to-violet font-display text-sm font-bold text-ink-950 transition-transform duration-500 group-hover:rotate-[360deg]">
+            <span className="grid size-9 place-items-center rounded-full bg-ink text-[0.8rem] font-semibold tracking-tight text-paper transition-transform duration-500 group-hover:rotate-[360deg]">
               {profile.initials}
             </span>
-            <span className="hidden font-display text-sm font-medium tracking-tight sm:inline">{profile.name}</span>
+            <span className="hidden text-sm font-medium tracking-tight sm:inline">{profile.name}</span>
           </a>
 
           <ul className="hidden items-center gap-1 lg:flex">
@@ -90,13 +90,13 @@ export function Navbar({ ready }: { ready: boolean }) {
                 <a
                   href={`#${item.id}`}
                   className={`relative block rounded-full px-4 py-2 text-sm transition-colors ${
-                    active === item.id ? 'text-fg' : 'text-muted hover:text-fg'
+                    active === item.id ? 'text-ink' : 'text-muted hover:text-ink'
                   }`}
                 >
                   {active === item.id ? (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full border border-white/10 bg-white/[0.06]"
+                      className="absolute inset-0 rounded-full bg-sunken"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   ) : null}
@@ -110,7 +110,7 @@ export function Navbar({ ready }: { ready: boolean }) {
             <LangToggle />
             <button
               type="button"
-              className="grid size-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] lg:hidden"
+              className="grid size-10 place-items-center rounded-full border border-line bg-surface lg:hidden"
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
@@ -134,7 +134,7 @@ export function Navbar({ ready }: { ready: boolean }) {
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="fixed inset-0 z-40 bg-ink-950/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-paper lg:hidden"
             initial={{ clipPath: 'circle(0% at 100% 0%)' }}
             animate={{ clipPath: 'circle(150% at 100% 0%)' }}
             exit={{ clipPath: 'circle(0% at 100% 0%)' }}
@@ -146,14 +146,14 @@ export function Navbar({ ready }: { ready: boolean }) {
                   <motion.a
                     href={`#${item.id}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline gap-4 py-2 font-display text-4xl font-semibold tracking-tight"
+                    className="flex items-baseline gap-4 py-2 text-4xl font-semibold tracking-[-0.03em]"
                     initial={{ y: '100%' }}
                     animate={{ y: 0 }}
                     exit={{ y: '100%' }}
                     transition={{ delay: 0.15 + i * 0.05, duration: 0.5, ease }}
                   >
-                    <span className="font-mono text-sm text-mint">0{i + 1}</span>
-                    <span className={active === item.id ? 'text-gradient' : ''}>{tr(item.label)}</span>
+                    <span className="font-mono text-sm text-subtle">0{i + 1}</span>
+                    <span className={active === item.id ? 'accent-serif text-accent' : ''}>{tr(item.label)}</span>
                   </motion.a>
                 </li>
               ))}

@@ -15,11 +15,11 @@ const crawler = new PlaywrightCrawler({
 await crawler.run(['https://example.com']);`;
 
 const output = [
-  { text: '$ npx tsx crawler.ts', cls: 'text-fg' },
-  { text: 'INFO  PlaywrightCrawler: Starting the crawl', cls: 'text-sky' },
-  { text: '✓ example.com/?page=1  48 items', cls: 'text-mint' },
-  { text: '✓ example.com/?page=2  52 items', cls: 'text-mint' },
-  { text: '✓ Crawl finished · 0 errors', cls: 'text-mint' },
+  { text: '$ npx tsx crawler.ts', cls: 'text-[#e6e6ea]' },
+  { text: 'INFO  PlaywrightCrawler: Starting the crawl', cls: 'text-[#93b4ff]' },
+  { text: '✓ example.com/?page=1  48 items', cls: 'text-[#8fe3b0]' },
+  { text: '✓ example.com/?page=2  52 items', cls: 'text-[#8fe3b0]' },
+  { text: '✓ Crawl finished · 0 errors', cls: 'text-[#8fe3b0]' },
 ];
 
 type Token = { text: string; cls: string };
@@ -32,22 +32,22 @@ function tokenize(src: string): Token[] {
   let last = 0;
   for (const m of src.matchAll(tokenRe)) {
     const index = m.index ?? 0;
-    if (index > last) tokens.push({ text: src.slice(last, index), cls: 'text-fg/90' });
+    if (index > last) tokens.push({ text: src.slice(last, index), cls: 'text-[#e6e6ea]' });
     const cls = m[1]
-      ? 'text-mint'
+      ? 'text-[#8fe3b0]'
       : m[2]
-        ? 'text-violet'
+        ? 'text-[#b9a8ff]'
         : m[3]
-          ? 'text-sky'
+          ? 'text-[#93b4ff]'
           : m[4]
-            ? 'text-[#ffd479]'
+            ? 'text-[#f5d68a]'
             : m[5]
-              ? 'text-rose'
-              : 'text-subtle';
+              ? 'text-[#ff9fb2]'
+              : 'text-[#7c7f8c]';
     tokens.push({ text: m[0], cls });
     last = index + m[0].length;
   }
-  if (last < src.length) tokens.push({ text: src.slice(last), cls: 'text-fg/90' });
+  if (last < src.length) tokens.push({ text: src.slice(last), cls: 'text-[#e6e6ea]' });
   return tokens;
 }
 
@@ -98,20 +98,16 @@ export function CodeWindow({ start }: { start: boolean }) {
 
   return (
     <div ref={ref} className="relative">
-      <div
-        aria-hidden
-        className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-mint/20 via-sky/10 to-violet/25 blur-3xl"
-      />
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-900/85 shadow-2xl shadow-black/60 backdrop-blur-xl">
+      <div className="overflow-hidden rounded-2xl border border-black/80 bg-code shadow-[0_40px_80px_-40px_rgb(20_20_23/0.55),0_0_0_1px_rgb(255_255_255/0.04)_inset]">
         <div className="flex items-center gap-2 border-b border-white/[0.07] px-4 py-3">
           <span className="size-3 rounded-full bg-[#ff5f57]" />
           <span className="size-3 rounded-full bg-[#febc2e]" />
           <span className="size-3 rounded-full bg-[#28c840]" />
-          <span className="ml-3 rounded-md bg-white/[0.05] px-2.5 py-1 font-mono text-[0.7rem] text-muted">crawler.ts</span>
+          <span className="ml-3 rounded-md bg-white/[0.06] px-2.5 py-1 font-mono text-[0.7rem] text-[#a3a5b0]">crawler.ts</span>
           <button
             type="button"
             onClick={() => setRun((r) => r + 1)}
-            className="ml-auto grid size-7 place-items-center rounded-md text-subtle transition-colors hover:bg-white/5 hover:text-fg"
+            className="ml-auto grid size-7 place-items-center rounded-md text-[#7c7f8c] transition-colors hover:bg-white/5 hover:text-white"
             aria-label="Replay"
           >
             <RotateCcw className="size-3.5" />
@@ -125,7 +121,7 @@ export function CodeWindow({ start }: { start: boolean }) {
             </pre>
             <pre className="absolute inset-0" aria-label="Crawler de ejemplo con Playwright y Crawlee">
               {renderTokens(tokens, count)}
-              <span className={`ml-px inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-mint ${done ? 'animate-blink' : ''}`} />
+              <span className={`ml-px inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-[#93b4ff] ${done ? 'animate-blink' : ''}`} />
             </pre>
           </div>
         </div>

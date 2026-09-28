@@ -38,5 +38,11 @@ El sitio detecta el idioma del navegador y se puede cambiar con el selector ES/E
 
 ## Accesibilidad
 
-Las animaciones respetan la preferencia del sistema `prefers-reduced-motion`: si está activa, no se muestra la
-intro y los movimientos se reducen a transiciones de opacidad.
+Las animaciones respetan la preferencia del sistema `prefers-reduced-motion`: si está activa, los movimientos se
+reducen a transiciones de opacidad y el carrusel de tecnologías se detiene.
+
+## Diseño
+
+Tema claro con tipografía Geist, acentos en Instrument Serif itálica y un único color de acento (`--color-accent`).
+Los tokens de color y tipografía están en [`src/index.css`](src/index.css). En los títulos, el texto entre
+asteriscos (`*así*`) se muestra como acento en serif itálica.
